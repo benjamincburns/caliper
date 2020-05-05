@@ -123,6 +123,8 @@ class Ethereum extends BlockchainInterface {
                 gas: args.contracts[key].gas,
                 estimateGas: args.contracts[key].estimateGas
             };
+
+            context.contracts[key].transactionBlockTimeout = Infinity;
         }
 
         if (this.ethereumConfig.fromAddress) {
