@@ -18,6 +18,7 @@ const EthereumHDKey = require('ethereumjs-wallet/hdkey');
 const Web3 = require('web3');
 const {BlockchainInterface, CaliperUtils, ConfigUtil, TxStatus} = require('@hyperledger/caliper-core');
 const logger = CaliperUtils.getLogger('ethereum.js');
+const createProvider = require('./providerFactory');
 
 /**
  * @typedef {Object} EthereumInvoke
@@ -41,7 +42,8 @@ class Ethereum extends BlockchainInterface {
         let configPath = CaliperUtils.resolvePath(ConfigUtil.get(ConfigUtil.keys.NetworkConfig));
         this.bcType = 'ethereum';
         this.ethereumConfig = require(configPath).ethereum;
-        this.web3 = new Web3(this.ethereumConfig.url);
+        const provider = createProvider(this.ethereumConfig.url);
+        this.web3 = new Web3(provider);
         this.web3.transactionConfirmationBlocks = this.ethereumConfig.transactionConfirmationBlocks;
         this.clientIndex = workerIndex;
     }
